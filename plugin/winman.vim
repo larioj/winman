@@ -115,9 +115,10 @@ class Layout
     const group_windows = this.GroupWindows(group)
     const target_group = group + direction
     const boundary_idx = direction == 1 ? -1 : 0
+    const target_group_boundary_idx = direction == 1 ? 0 : -1
     const window = group_windows[boundary_idx]
     const target_group_windows = this.GroupWindows(target_group)
-    const target_window = target_group_windows[boundary_idx]
+    const target_window = target_group_windows[target_group_boundary_idx]
     const is_below = min([group, target_group]) % 2 == 1
     add(this.thunks, WinSplitMoveThunk(window, target_window, is_below))
     this.group_sizes[group] -= 1
@@ -399,6 +400,28 @@ export def g:RunWinmanTests()
   layout_with_explorer.BeforeClose()
   assert_equal([1, 1, 1, 2], layout_with_explorer.group_sizes)
   assert_equal([1000, 1001, 1002, 1003, 1004], layout_with_explorer.windows)
+
+  def MakeLargeLayout(): Layout
+    var columns = 256
+    var filetypes = {1000: 'vim', 1001: 'vim', 1002: 'markdown', 1003: 'vim', 1004: 'vim', 1005: 'vim', 1006: 'vim'} 
+    var window = 1006
+    var previous_window = 1000
+    var window_count = 7
+    var winman_explorer_filetype = 'nerdtree'
+    var winman_explorer_width = 30
+    var winman_window_width = 80
+    var windows = [1000, 1006, 1005, 1004, 1003, 1001]
+    var group_sizes = [0, 3, 2, 2]
+    var thunks = []
+    return Layout.new(columns, filetypes, window, previous_window, window_count,
+      winman_explorer_filetype, winman_explorer_width, winman_window_width, windows, group_sizes, thunks)
+  enddef
+
+  var large_layout = MakeLargeLayout()
+  large_layout.MoveFrom(1, 1)
+  assert_equal([0, 2, 3, 2], large_layout.group_sizes)
+  assert_equal([1000, 1006, 1005, 1004, 1003, 1001], large_layout.windows)
+  # echo large_layout.thunks
 
   echo v:errors
 enddef
