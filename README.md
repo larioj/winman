@@ -1,10 +1,5 @@
 # WinMan
-A vim window manager
+A vim window tiler
 
 ## Files
 - plugin/winman.vim
-- plugin/layout.vim
-- plugin/lib.vim
-
-
-- plugin/layout2.vim
