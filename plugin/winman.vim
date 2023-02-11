@@ -20,11 +20,11 @@ def WinLayout(): list<any>
   var [type, fragment] = winlayout()
   if type == 'leaf'
     type = 'col'
-    fragment = [[type, fragment]]
+    fragment = [['leaf', fragment]]
   endif
   if type == 'col'
     type = 'row'
-    fragment = [[type, fragment]]
+    fragment = [['col', fragment]]
   endif
   return [type, fragment]
 enddef
