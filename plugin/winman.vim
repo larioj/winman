@@ -267,7 +267,7 @@ export def g:WinmanAfterOpen()
     return
   endif
   var layout = CaptureLayout()
-  layout.AfterOpen()
+  AfterOpen(layout)
   for thunk in layout.thunks
     execute thunk
   endfor
@@ -278,7 +278,7 @@ export def g:WinmanBeforeClose()
     return
   endif
   var layout = CaptureLayout()
-  layout.BeforeClose()
+  BeforeClose(layout)
   for thunk in layout.thunks
     execute thunk
   endfor
